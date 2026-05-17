@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>키즈노트 iPhone 호환판</title>
+<style>
+:root{
+  --bg:#f3f6fb;--card:#fff;--line:#d9e5f7;--text:#1d2940;--muted:#6c7aa6;
+  --primary:#3b82f6;--primary2:#6366f1;--green:#16a34a;--red:#dc2626;
+  --amber:#d97706;--soft:#f8fbff;--chip:#f8faff;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text)}
+body{padding-bottom:110px}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.wrap{max-width:760px;margin:0 auto;padding:14px}
+.header{position:sticky;top:0;z-index:20;background:rgba(243,246,251,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.header-in{max-width:760px;margin:0 auto;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--primary),#8b5cf6);display:grid;place-items:center;color:#fff;font-weight:800}
+.title{flex:1}
+.title h1{margin:0;font-size:17px}
+.title p{margin:2px 0 0;font-size:12px;color:var(--muted)}
+.badge{font-size:11px;font-weight:700;padding:6px 10px;border-radius:999px;border:1px solid #c9dafd;background:#eef5ff;color:#1d4ed8}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 2px 10px rgba(20,40,90,.05)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:480px){.row{grid-template-columns:1fr}}
+.label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:0 0 6px}
+input,select,textarea{width:100%;border:1.5px solid var(--line);background:var(--soft);color:var(--text);padding:12px 13px;border-radius:13px;outline:none}
+textarea{min-height:86px;resize:vertical;line-height:1.65}
+input:focus,select:focus,textarea:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(59,130,246,.12)}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:#e4ecfb;padding:4px;border-radius:16px;margin-bottom:12px}
+.tab{min-height:42px;border:0;border-radius:12px;background:transparent;color:var(--muted);font-weight:800}
+.tab.active{background:#fff;color:#1d4ed8;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.section-h{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.section-h .ico{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:#eef5ff}
+.section-h h2{margin:0;font-size:15px}
+.section-h p{margin:2px 0 0;font-size:12px;color:var(--muted)}
+.add-row{display:flex;gap:8px}
+.add-row input{flex:1}
+.btn,.btn-sm{border:0;border-radius:14px;font-weight:800}
+.btn{min-height:50px}
+.btn-sm{min-height:42px;padding:0 14px;white-space:nowrap}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff}
+.btn-secondary{background:#fff;border:1.5px solid var(--line);color:var(--text)}
+.bottom{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(to bottom,rgba(243,246,251,0),rgba(243,246,251,.98) 24%)}
+.bottom-in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip,.pill,.tpl,.child{user-select:none;touch-action:manipulation}
+.chip{border:1.5px solid var(--line);background:var(--chip);padding:10px 12px;border-radius:999px;font-size:13px;font-weight:700;min-height:42px}
+.chip.on{background:#eef5ff;border-color:var(--primary);color:#1d4ed8}
+.pill-wrap{display:flex;gap:6px;flex-wrap:wrap}
+.pill{flex:1;min-width:60px;min-height:42px;border:1.5px solid var(--line);border-radius:10px;background:var(--chip);display:grid;place-items:center;font-size:12px;font-weight:800}
+.pill.on{background:#1d4ed8;color:#fff;border-color:#1d4ed8}
+.child-list{display:grid;gap:8px}
+.child{display:flex;align-items:center;gap:10px;padding:12px;border:1.5px solid var(--line);background:var(--soft);border-radius:14px}
+.child.active{border-color:var(--primary);background:#eef5ff}
+.av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-weight:800;flex:none}
+.child-main{flex:1;min-width:0}.child-name{font-weight:800;font-size:14px}.child-sub{font-size:12px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.del{width:32px;height:32px;border-radius:50%;border:0;background:transparent;color:#94a3b8;font-size:14px;flex:none}
+.small-badge{font-size:11px;font-weight:800;padding:4px 8px;border-radius:999px;border:1px solid #cbd5e1;color:#475569;background:#f8fafc;flex:none}
+.progress{margin-bottom:12px}.progress-top{display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:var(--muted);margin-bottom:5px}.bar{height:6px;background:#dbe5f6;border-radius:999px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,var(--primary),#8b5cf6);width:0}
+.tpls{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:480px){.tpls{grid-template-columns:1fr 1fr}}
+.tpl{border:1.5px solid var(--line);background:var(--soft);border-radius:14px;padding:13px;text-align:left}.tpl em{display:block;font-style:normal;font-size:22px;margin-bottom:4px}.tpl b{display:block;font-size:14px}.tpl span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.note-list{display:grid;gap:10px}.note-item{border:1.5px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}.note-head{padding:12px 14px;background:var(--soft);display:flex;justify-content:space-between;align-items:center;font-weight:800}.note-body{display:none;padding:14px}.note-body.open{display:block}.note-text{white-space:pre-wrap;line-height:1.8;font-size:14px}
+.empty{text-align:center;padding:28px 0;color:#94a3b8}.empty .big{font-size:36px;margin-bottom:8px}
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(10px);opacity:0;pointer-events:none;z-index:99;background:#111827;color:#fff;padding:10px 16px;border-radius:999px;font-size:13px;font-weight:800;transition:.2s;max-width:88vw;text-align:center}.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.sys{border-radius:14px;padding:12px 14px;margin-bottom:12px;font-size:13px;line-height:1.55}.sys.red{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}.sys.green{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}.sys.amber{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}
+.hide{display:none !important}
+</style>
+</head>
+<body>
+<div class="header"><div class="header-in"><div class="logo">K</div><div class="title"><h1>키즈노트 자동 작성기</h1><p>아이폰 호환 진단 포함 최적화 버전</p></div><div class="badge" id="jsBadge">JS 확인중</div></div></div>
+<div class="wrap">
+  <div id="envWarn" class="sys amber">현재 환경을 확인하는 중입니다. 잠시만 기다려 주세요.</div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="write">✏️ 작성</button>
+    <button class="tab" data-tab="preview">👁 미리보기</button>
+    <button class="tab" data-tab="history">📋 기록</button>
+  </div>
+
+  <div id="pane-write">
+    <div class="card">
+      <div class="section-h"><div class="ico">👨‍👩‍👧</div><div><h2>원아 목록</h2><p>이름을 누르면 개별 작성이 시작됩니다</p></div></div>
+      <div class="child-list" id="childList"></div>
+      <div class="add-row">
+        <input id="childNameInput" placeholder="예: 민준, 서연, 하은" autocomplete="off" spellcheck="false">
+        <button class="btn-sm btn-primary" id="addChildBtn" type="button">+ 추가</button>
+      </div>
+      <p style="margin:8px 0 0;font-size:12px;color:var(--muted)">쉼표(,)로 구분하면 여러 명을 한 번에 추가할 수 있어요.</p>
+    </div>
+
+    <div class="card">
+      <div class="section-h"><div class="ico">📅</div><div><h2>날짜 & 날씨</h2><p>모든 원아에 공통 적용됩니다</p></div></div>
+      <div class="row">
+        <div><label class="label">날짜</label><input id="date" type="date"></div>
+        <div><label class="label">날씨</label><select id="weather"><option value="">선택 안 함</option><option value="맑은">☀️ 맑음</option><option value="흐린">☁️ 흐림</option><option value="비가 오는">🌧 비</option><option value="눈이 오는">❄️ 눈</option><option value="바람이 부는">💨 바람</option></select></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-h"><div class="ico">📝</div><div><h2>공통 활동 내용</h2><p>오늘 반 전체 활동을 모두에게 반영합니다</p></div></div>
+      <label class="label">공통 활동</label>
+      <div class="chips" id="commonChips">
+        <button class="chip" type="button" data-common="미술 활동">🎨 미술</button>
+        <button class="chip" type="button" data-common="블록·쌓기 놀이">🧱 블록</button>
+        <button class="chip" type="button" data-common="바깥 놀이">🌿 바깥놀이</button>
+        <button class="chip" type="button" data-common="음악·율동 활동">🎵 음악/율동</button>
+        <button class="chip" type="button" data-common="책 읽기">📚 독서</button>
+        <button class="chip" type="button" data-common="역할 놀이">🎭 역할놀이</button>
+      </div>
+      <div style="height:12px"></div>
+      <label class="label">공통 특이사항</label>
+      <input id="commonMemo" placeholder="예: 오늘 학부모 참관 수업이 있었어요">
+      <div style="height:12px"></div>
+      <label class="label">가정 연계 안내</label>
+      <input id="commonHome" placeholder="예: 오늘 배운 노래를 집에서도 함께 불러보세요 😊">
+    </div>
+
+    <div id="indivWrap" class="hide">
+      <div class="progress"><div class="progress-top"><span id="progressText">0 / 0명 완료</span><span id="progressPct">0%</span></div><div class="bar"><div class="fill" id="progressFill"></div></div></div>
+
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px"><div style="font-weight:900;font-size:15px">📌 개별 생활기록 — <span id="activeChildName" style="color:#1d4ed8"></span></div><div style="display:flex;gap:6px"><button class="btn-sm btn-secondary" id="prevBtn" type="button">← 이전</button><button class="btn-sm btn-secondary" id="nextBtn" type="button">다음 →</button></div></div>
+        <div class="section-h"><div class="ico">⚡</div><div><h2>빠른 템플릿</h2><p>터치 한 번으로 주요 항목이 자동 입력됩니다</p></div></div>
+        <div class="tpls">
+          <button class="tpl" type="button" data-tpl="happy"><em>😊</em><b>즐거운 하루</b><span>활발하고 밝은 날</span></button>
+          <button class="tpl" type="button" data-tpl="calm"><em>😌</em><b>차분한 하루</b><span>집중하고 안정적인 날</span></button>
+          <button class="tpl" type="button" data-tpl="tired"><em>😴</em><b>피곤한 날</b><span>낮잠 길고 컨디션 저조</span></button>
+          <button class="tpl" type="button" data-tpl="outdoor"><em>🌿</em><b>바깥놀이 중심</b><span>신체활동·자연탐색</span></button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-h"><div class="ico">💗</div><div><h2>기분 & 건강</h2></div></div>
+        <label class="label">오늘 기분</label>
+        <div class="chips">
+          <button class="chip" type="button" data-key="mood" data-value="밝고 활기차게">😊 밝음</button>
+          <button class="chip" type="button" data-key="mood" data-value="차분하고 안정적으로">😌 차분</button>
+          <button class="chip" type="button" data-key="mood" data-value="조금 피곤한 듯">😴 피곤</button>
+          <button class="chip" type="button" data-key="mood" data-value="다소 예민하게">🥺 예민</button>
+        </div>
+        <div style="height:12px"></div>
+        <label class="label">표정 / 감정</label>
+        <div class="chips">
+          <button class="chip" type="button" data-key="expr" data-value="웃음이 많았고">😄 웃음 많음</button>
+          <button class="chip" type="button" data-key="expr" data-value="눈을 반짝이며 집중했고">✨ 집중</button>
+          <button class="chip" type="button" data-key="expr" data-value="친구와 눈을 맞추며 잘 어울렸고">👀 눈맞춤 좋음</button>
+          <button class="chip" type="button" data-key="expr" data-value="혼자 조용히 집중하며">🧸 혼자 집중</button>
+        </div>
+        <div style="height:12px"></div>
+        <div class="row">
+          <div><label class="label">체온</label><input id="temp" type="number" step="0.1" min="35" max="42" placeholder="36.5"></div>
+          <div><label class="label">건강 메모</label><input id="healthNote" placeholder="예: 콧물이 조금 있었어요"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-h"><div class="ico">🍚</div><div><h2>식사</h2></div></div>
+        <label class="label">오전 간식</label><div class="pill-wrap"><button class="pill" type="button" data-meal="snack1" data-value="오전 간식을 잘 먹었어요">잘 먹음</button><button class="pill" type="button" data-meal="snack1" data-value="오전 간식을 보통으로 먹었어요">보통</button><button class="pill" type="button" data-meal="snack1" data-value="오전 간식을 조금 먹었어요">조금</button><button class="pill" type="button" data-meal="snack1" data-value="오전 간식을 거의 먹지 않았어요">안 먹음</button></div>
+        <div style="height:12px"></div>
+        <label class="label">점심</label><div class="pill-wrap"><button class="pill" type="button" data-meal="lunch" data-value="점심을 잘 먹었어요">잘 먹음</button><button class="pill" type="button" data-meal="lunch" data-value="점심을 보통으로 먹었어요">보통</button><button class="pill" type="button" data-meal="lunch" data-value="점심을 조금 먹었어요">조금</button><button class="pill" type="button" data-meal="lunch" data-value="점심을 거의 먹지 않았어요">안 먹음</button></div>
+        <div style="height:12px"></div>
+        <label class="label">오후 간식</label><div class="pill-wrap"><button class="pill" type="button" data-meal="snack2" data-value="오후 간식을 잘 먹었어요">잘 먹음</button><button class="pill" type="button" data-meal="snack2" data-value="오후 간식을 보통으로 먹었어요">보통</button><button class="pill" type="button" data-meal="snack2" data-value="오후 간식을 조금 먹었어요">조금</button><button class="pill" type="button" data-meal="snack2" data-value="오후 간식을 거의 먹지 않았어요">안 먹음</button></div>
+        <div style="height:12px"></div>
+        <label class="label">식사 메모</label><input id="mealNote" placeholder="예: 당근은 조금 남겼어요">
+      </div>
+
+      <div class="card">
+        <div class="section-h"><div class="ico">😴</div><div><h2>낮잠</h2></div></div>
+        <label class="label">낮잠 상태</label>
+        <div class="chips">
+          <button class="chip" type="button" data-key="sleep" data-value="낮잠을 편안하게 잘 잤어요">😴 푹 잠</button>
+          <button class="chip" type="button" data-key="sleep" data-value="낮잠을 조금 잤어요">🌙 조금 잠</button>
+          <button class="chip" type="button" data-key="sleep" data-value="낮잠을 자다 깨다를 반복했어요">😵 자다 깸</button>
+          <button class="chip" type="button" data-key="sleep" data-value="낮잠을 자지 않았어요">❌ 안 잠</button>
+        </div>
+        <div style="height:12px"></div>
+        <div class="row"><div><label class="label">잠든 시각</label><input id="sleepFrom" type="time"></div><div><label class="label">깬 시각</label><input id="sleepTo" type="time"></div></div>
+      </div>
+
+      <div class="card">
+        <div class="section-h"><div class="ico">✨</div><div><h2>오늘의 하이라이트</h2><p>짧게 적어도 자연스럽게 문장화됩니다</p></div></div>
+        <label class="label">하이라이트</label><textarea id="highlight" placeholder="예: 친구와 블록 기차를 만들며 함께 협동하는 모습이 보기 좋았어요."></textarea>
+        <div style="height:12px"></div>
+        <label class="label">가정 연계</label><input id="homeGuide" placeholder="예: 오늘 했던 놀이 이야기를 집에서도 물어봐 주세요 😊">
+        <div style="height:14px"></div>
+        <button class="btn btn-primary" id="saveNextBtn" type="button">✅ 저장 후 다음 원아</button>
+      </div>
+    </div>
+
+    <div id="noChildHint" class="empty"><div class="big">👶</div><p>원아를 추가한 뒤 이름을 터치해 주세요</p></div>
+  </div>
+
+  <div id="pane-preview" class="hide">
+    <div class="card"><div class="section-h"><div class="ico">📋</div><div><h2>완성된 알림장 목록</h2><p>원아별로 펼쳐서 복사할 수 있어요</p></div></div><div class="note-list" id="previewList"></div></div>
+    <div style="display:grid;gap:10px"><button class="btn btn-primary" id="copyAllBtn" type="button">📋 전체 복사</button><button class="btn btn-secondary" id="saveAllBtn" type="button">💾 전체 기록 저장</button></div>
+  </div>
+
+  <div id="pane-history" class="hide">
+    <div class="card"><div class="section-h"><div class="ico">📂</div><div><h2>저장된 기록</h2><p>터치하면 바로 복사됩니다</p></div></div><div id="historyList"></div></div>
+  </div>
+</div>
+
+<div class="bottom"><div class="bottom-in"><button class="btn btn-primary" id="makeBtn" type="button">✨ 전체 알림장 완성</button><button class="btn btn-secondary" id="resetBtn" type="button">🔄 전체 초기화</button></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+
+var state = {
+  children: [],
+  current: -1,
+  commonActs: [],
+  jsOk: false,
+  localBlockedSuspected: false
+};
+
+function blankData(){
+  return {
+    mood:'', expr:'', sleep:'', temp:'', healthNote:'', mealNote:'',
+    sleepFrom:'', sleepTo:'', highlight:'', homeGuide:'',
+    meals:{snack1:'', lunch:'', snack2:''}, done:false
+  };
+}
+
+function $(id){ return document.getElementById(id); }
+function qa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+function esc(s){ return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+var toastTimer = null;
+function showToast(msg){
+  var t = $('toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('on'); }, 2200);
+}
+
+function setToday(){
+  var n = new Date();
+  var y = n.getFullYear();
+  var m = String(n.getMonth()+1).padStart(2,'0');
+  var d = String(n.getDate()).padStart(2,'0');
+  $('date').value = y + '-' + m + '-' + d;
+}
+
+function updateEnvBanner(){
+  var badge = $('jsBadge');
+  var warn = $('envWarn');
+  badge.textContent = 'JS 정상';
+  badge.style.background = '#ecfdf5';
+  badge.style.color = '#166534';
+  badge.style.borderColor = '#bbf7d0';
+
+  var proto = location.protocol || '';
+  var ua = navigator.userAgent || '';
+  var isIOS = /iPhone|iPad|iPod/i.test(ua);
+  var isFile = proto === 'file:';
+  if (isIOS && isFile) {
+    state.localBlockedSuspected = true;
+    warn.className = 'sys red';
+    warn.innerHTML = '현재 <b>아이폰 로컬 파일(file://)</b> 환경으로 열려 있을 가능성이 높습니다. 이 환경에서는 iOS가 보안상 로컬 HTML의 JavaScript 실행을 제한하거나 불안정하게 처리할 수 있어 버튼이 눌려도 동작하지 않을 수 있습니다. 아래 수정본은 최대한 호환되게 만들었지만, 가장 확실한 방법은 웹 링크(https)로 열거나 HTML 실행 지원 앱에서 여는 것입니다.';
+  } else {
+    warn.className = 'sys green';
+    warn.textContent = 'JavaScript가 정상 실행 중입니다. 현재 페이지는 상호작용 가능한 상태입니다.';
+  }
+}
+
+function saveCurrent(){
+  if (state.current < 0 || !state.children[state.current]) return;
+  var d = state.children[state.current].data;
+  d.temp = $('temp').value;
+  d.healthNote = $('healthNote').value.trim();
+  d.mealNote = $('mealNote').value.trim();
+  d.sleepFrom = $('sleepFrom').value;
+  d.sleepTo = $('sleepTo').value;
+  d.highlight = $('highlight').value.trim();
+  d.homeGuide = $('homeGuide').value.trim();
+}
+
+function loadChild(idx){
+  var c = state.children[idx];
+  if (!c) return;
+  var d = c.data;
+  $('activeChildName').textContent = c.name;
+  $('temp').value = d.temp || '';
+  $('healthNote').value = d.healthNote || '';
+  $('mealNote').value = d.mealNote || '';
+  $('sleepFrom').value = d.sleepFrom || '';
+  $('sleepTo').value = d.sleepTo || '';
+  $('highlight').value = d.highlight || '';
+  $('homeGuide').value = d.homeGuide || '';
+
+  qa('[data-key]').forEach(function(el){
+    var key = el.getAttribute('data-key');
+    var val = el.getAttribute('data-value');
+    el.classList.toggle('on', d[key] === val);
+  });
+  qa('[data-meal]').forEach(function(el){
+    var mk = el.getAttribute('data-meal');
+    el.classList.toggle('on', d.meals[mk] === el.getAttribute('data-value'));
+  });
+
+  $('prevBtn').disabled = idx === 0;
+  $('nextBtn').disabled = idx === state.children.length - 1;
+  renderChildList();
+}
+
+function renderChildList(){
+  var box = $('childList');
+  if (!state.children.length){
+    box.innerHTML = '<div class="empty"><div class="big">👶</div><p>아직 원아가 없어요</p></div>';
+    $('indivWrap').classList.add('hide');
+    $('noChildHint').classList.remove('hide');
+    return;
+  }
+  var html = state.children.map(function(c, i){
+    var status = c.data.done ? '✅ 작성 완료' : (c.data.mood || c.data.highlight ? '✏️ 작성 중...' : '⏳ 미작성');
+    return '<div class="child' + (i===state.current ? ' active' : '') + '" data-child-index="'+i+'">'
+      + '<div class="av">'+esc(c.name.charAt(0))+'</div>'
+      + '<div class="child-main"><div class="child-name">'+esc(c.name)+'</div><div class="child-sub">'+status+'</div></div>'
+      + '<span class="small-badge">'+(c.data.done ? '완료' : '대기')+'</span>'
+      + '<button class="del" type="button" data-del-index="'+i+'">✕</button>'
+      + '</div>';
+  }).join('');
+  box.innerHTML = html;
+}
+
+function addChildren(){
+  var raw = $('childNameInput').value.trim();
+  if (!raw) { showToast('원아 이름을 입력해 주세요'); return; }
+  var names = raw.split(',').map(function(v){ return v.trim(); }).filter(Boolean);
+  var added = 0;
+  names.forEach(function(name){
+    var exists = state.children.some(function(c){ return c.name === name; });
+    if (!exists) {
+      state.children.push({ id: Date.now() + Math.random(), name:name, data:blankData() });
+      added += 1;
+    }
+  });
+  $('childNameInput').value = '';
+  renderChildList();
+  updateProgress();
+  if (added > 0) {
+    selectChild(state.children.length - added);
+    showToast('✅ ' + added + '명 추가되었어요');
+  } else {
+    showToast('이미 같은 이름이 있어요');
+  }
+}
+
+function selectChild(idx){
+  if (idx < 0 || idx >= state.children.length) return;
+  saveCurrent();
+  state.current = idx;
+  $('indivWrap').classList.remove('hide');
+  $('noChildHint').classList.add('hide');
+  loadChild(idx);
+  updateProgress();
+}
+
+function deleteChild(idx){
+  if (!state.children[idx]) return;
+  if (!confirm(state.children[idx].name + '을(를) 삭제할까요?')) return;
+  state.children.splice(idx, 1);
+  if (!state.children.length) {
+    state.current = -1;
+  } else if (state.current >= state.children.length) {
+    state.current = state.children.length - 1;
+  }
+  renderChildList();
+  if (state.current >= 0) selectChild(state.current);
+  else {
+    $('indivWrap').classList.add('hide');
+    $('noChildHint').classList.remove('hide');
+  }
+  updateProgress();
+  showToast('삭제했어요');
+}
+
+function updateProgress(){
+  var total = state.children.length;
+  var done = state.children.filter(function(c){ return c.data.done; }).length;
+  var pct = total ? Math.round(done / total * 100) : 0;
+  $('progressText').textContent = done + ' / ' + total + '명 완료';
+  $('progressPct').textContent = pct + '%';
+  $('progressFill').style.width = pct + '%';
+}
+
+function applyTpl(key){
+  if (state.current < 0) { showToast('먼저 원아를 선택해 주세요'); return; }
+  var d = state.children[state.current].data;
+  var tpl = {
+    happy:{ mood:'밝고 활기차게', expr:'웃음이 많았고', sleep:'낮잠을 편안하게 잘 잤어요', sleepFrom:'13:00', sleepTo:'14:20', meals:{snack1:'오전 간식을 잘 먹었어요', lunch:'점심을 잘 먹었어요', snack2:'오후 간식을 잘 먹었어요'}, highlight:'친구들과 즐겁게 어울리며 환한 미소를 많이 보여주었어요. 활동에도 밝게 참여하는 모습이 참 사랑스러웠답니다 😊', homeGuide:'오늘 즐거웠던 놀이 이야기를 집에서도 함께 나눠보세요 💛' },
+    calm:{ mood:'차분하고 안정적으로', expr:'눈을 반짝이며 집중했고', sleep:'낮잠을 편안하게 잘 잤어요', sleepFrom:'13:10', sleepTo:'14:10', meals:{snack1:'오전 간식을 잘 먹었어요', lunch:'점심을 잘 먹었어요', snack2:'오후 간식을 보통으로 먹었어요'}, highlight:'책과 활동에 차분하게 집중하는 모습이 인상적이었어요. 선생님의 이야기를 잘 듣고 자신의 속도로 안정감 있게 참여했답니다.', homeGuide:'오늘 어떤 책이나 활동이 가장 좋았는지 집에서 물어봐 주세요 📚' },
+    tired:{ mood:'조금 피곤한 듯', expr:'혼자 조용히 집중하며', sleep:'낮잠을 편안하게 잘 잤어요', sleepFrom:'12:50', sleepTo:'14:40', meals:{snack1:'오전 간식을 보통으로 먹었어요', lunch:'점심을 조금 먹었어요', snack2:'오후 간식을 잘 먹었어요'}, highlight:'오전에는 조금 피곤해 보였지만 낮잠 후에는 표정이 한결 부드러워졌어요. 오후에는 컨디션을 천천히 회복하는 모습이 보였답니다.', homeGuide:'오늘은 조금 피곤한 하루였으니 가정에서 푹 쉴 수 있도록 도와주세요 🌙' },
+    outdoor:{ mood:'밝고 활기차게', expr:'웃음이 많았고', sleep:'낮잠을 조금 잤어요', sleepFrom:'13:20', sleepTo:'14:00', meals:{snack1:'오전 간식을 잘 먹었어요', lunch:'점심을 잘 먹었어요', snack2:'오후 간식을 잘 먹었어요'}, highlight:'바깥놀이 시간에 몸을 움직이며 자연을 살펴보는 모습이 무척 즐거워 보였어요. 친구들과 함께 신나게 뛰어놀며 활발하게 참여했답니다 🌿', homeGuide:'오늘 바깥놀이에서 무엇이 가장 재미있었는지 물어봐 주세요 😊' }
+  }[key];
+  if (!tpl) return;
+  d.mood = tpl.mood; d.expr = tpl.expr; d.sleep = tpl.sleep; d.sleepFrom = tpl.sleepFrom; d.sleepTo = tpl.sleepTo; d.meals = tpl.meals; d.highlight = tpl.highlight; d.homeGuide = tpl.homeGuide;
+  loadChild(state.current);
+  showToast('템플릿 적용 완료');
+}
+
+function saveAndNext(){
+  if (state.current < 0) return;
+  saveCurrent();
+  state.children[state.current].data.done = true;
+  updateProgress();
+  renderChildList();
+  if (state.current < state.children.length - 1) {
+    selectChild(state.current + 1);
+    showToast('저장 후 다음 원아로 이동했어요');
+  } else {
+    showToast('모든 원아 작성이 완료되었어요');
+  }
+}
+
+function buildNote(child){
+  var d = child.data;
+  var dateVal = $('date').value;
+  var dt = dateVal ? new Date(dateVal + 'T00:00:00') : new Date();
+  var days = ['일','월','화','수','목','금','토'];
+  var dateStr = (dt.getMonth()+1) + '월 ' + dt.getDate() + '일(' + days[dt.getDay()] + ')';
+  var weather = $('weather').value;
+  var commonMemo = $('commonMemo').value.trim();
+  var commonHome = $('commonHome').value.trim();
+  var lines = [];
+  var intro = '안녕하세요 😊 ' + dateStr + (weather ? ' ' + weather + ' 날, ' : ', ') + child.name + ' 어린이의 하루를 전해드려요.';
+  lines.push(intro, '');
+  if (d.mood || d.expr) {
+    var moodLine = '오늘 ' + child.name + ' 어린이는 ';
+    if (d.mood) moodLine += d.mood + ' 하루를 보냈어요. ';
+    if (d.expr) moodLine += d.expr + ' 참 사랑스러운 모습이었답니다 💛';
+    lines.push(moodLine.trim());
+  }
+  if (d.temp || d.healthNote) {
+    var health = '🏥 [건강] ';
+    if (d.temp) health += '체온은 ' + d.temp + '℃였어요. ';
+    if (d.healthNote) health += d.healthNote;
+    lines.push(health.trim());
+  }
+  var meals = [d.meals.snack1, d.meals.lunch, d.meals.snack2].filter(Boolean);
+  if (meals.length || d.mealNote) {
+    lines.push('🍽 [식사] ' + meals.join(' / ') + (d.mealNote ? (meals.length ? ' — ' : '') + d.mealNote : ''));
+  }
+  if (d.sleep) {
+    var sleep = '💤 [낮잠] ' + d.sleep;
+    if (d.sleepFrom && d.sleepTo) sleep += ' (' + d.sleepFrom + ' ~ ' + d.sleepTo + ')';
+    lines.push(sleep + '.');
+  }
+  if (state.commonActs.length) lines.push('🎨 [활동] ' + state.commonActs.join(', ') + '을(를) 즐겁게 했어요.');
+  if (commonMemo) lines.push('📌 ' + commonMemo + '.');
+  if (d.highlight) { lines.push('', '✨ [오늘의 하이라이트]', d.highlight); }
+  if (d.homeGuide || commonHome) { lines.push('', '📌 [가정 연계] ' + (d.homeGuide || commonHome)); }
+  lines.push('', '오늘도 ' + child.name + ' 어린이와 함께한 하루가 참 행복했어요. 가정에서도 따뜻한 시간 보내시길 바랍니다 🌙');
+  return lines.join('\n');
+}
+
+function buildPreview(){
+  var list = $('previewList');
+  if (!state.children.length) {
+    list.innerHTML = '<div class="empty"><div class="big">📭</div><p>작성된 원아가 없어요</p></div>';
+    return;
+  }
+  list.innerHTML = state.children.map(function(c, i){
+    var txt = buildNote(c);
+    return '<div class="note-item"><div class="note-head" data-open="'+i+'"><span>👶 ' + esc(c.name) + ' — ' + txt.length + '자</span><span>▼</span></div><div class="note-body" id="noteBody'+i+'"><div class="note-text">'+esc(txt)+'</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn-sm btn-primary" type="button" data-copy="'+i+'">📋 복사</button><button class="btn-sm btn-secondary" type="button" data-save="'+i+'">💾 저장</button></div></div></div>';
+  }).join('');
+}
+
+function togglePreview(i){
+  var body = $('noteBody' + i);
+  if (!body) return;
+  body.classList.toggle('open');
+}
+
+function copyText(text, okMsg){
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ showToast(okMsg); }).catch(function(){ fallbackCopy(text, okMsg); });
+  } else {
+    fallbackCopy(text, okMsg);
+  }
+}
+
+function fallbackCopy(text, okMsg){
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.setAttribute('readonly','');
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  ta.style.top = '-9999px';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  ta.setSelectionRange(0, 999999);
+  try { document.execCommand('copy'); showToast(okMsg); }
+  catch(e) { showToast('복사가 제한된 환경입니다'); }
+  document.body.removeChild(ta);
+}
+
+function copyAll(){
+  if (!state.children.length) { showToast('작성된 원아가 없어요'); return; }
+  var text = state.children.map(function(c){ return '[ ' + c.name + ' ]\n' + buildNote(c); }).join('\n\n────────────────────\n\n');
+  copyText(text, '전체 복사 완료');
+}
+
+function saveHistoryOne(i){
+  try {
+    var arr = JSON.parse(localStorage.getItem('kn_ios_hist') || '[]');
+    arr.unshift({ id: Date.now(), child: state.children[i].name, date: $('date').value, text: buildNote(state.children[i]) });
+    if (arr.length > 100) arr = arr.slice(0,100);
+    localStorage.setItem('kn_ios_hist', JSON.stringify(arr));
+    showToast('저장 완료');
+  } catch(e) {
+    showToast('저장 기능이 제한된 환경입니다');
+  }
+}
+
+function saveHistoryAll(){
+  if (!state.children.length) { showToast('작성된 원아가 없어요'); return; }
+  try {
+    var arr = JSON.parse(localStorage.getItem('kn_ios_hist') || '[]');
+    state.children.forEach(function(c){ arr.unshift({ id: Date.now() + Math.random(), child: c.name, date: $('date').value, text: buildNote(c) }); });
+    if (arr.length > 100) arr = arr.slice(0,100);
+    localStorage.setItem('kn_ios_hist', JSON.stringify(arr));
+    showToast('전체 저장 완료');
+  } catch(e) {
+    showToast('저장 기능이 제한된 환경입니다');
+  }
+}
+
+function renderHistory(){
+  var box = $('historyList');
+  try {
+    var arr = JSON.parse(localStorage.getItem('kn_ios_hist') || '[]');
+    if (!arr.length) {
+      box.innerHTML = '<div class="empty"><div class="big">📭</div><p>저장된 기록이 없어요</p></div>';
+      return;
+    }
+    box.innerHTML = arr.map(function(item, i){
+      return '<div class="note-item"><div class="note-head" data-hcopy="'+i+'"><span>👶 ' + esc(item.child) + ' — ' + esc(item.date) + '</span><span>복사</span></div></div>';
+    }).join('');
+  } catch(e) {
+    box.innerHTML = '<div class="sys amber">이 환경에서는 기록 저장/불러오기가 제한될 수 있어요.</div>';
+  }
+}
+
+function switchTab(tab){
+  qa('.tab').forEach(function(btn){ btn.classList.toggle('active', btn.getAttribute('data-tab') === tab); });
+  $('pane-write').classList.toggle('hide', tab !== 'write');
+  $('pane-preview').classList.toggle('hide', tab !== 'preview');
+  $('pane-history').classList.toggle('hide', tab !== 'history');
+  if (tab === 'preview') buildPreview();
+  if (tab === 'history') renderHistory();
+}
+
+function resetAll(){
+  if (!confirm('모든 내용을 초기화할까요?')) return;
+  state.children = [];
+  state.current = -1;
+  state.commonActs = [];
+  setToday();
+  $('weather').value = '';
+  $('commonMemo').value = '';
+  $('commonHome').value = '';
+  $('temp').value = '';
+  $('healthNote').value = '';
+  $('mealNote').value = '';
+  $('sleepFrom').value = '';
+  $('sleepTo').value = '';
+  $('highlight').value = '';
+  $('homeGuide').value = '';
+  qa('#commonChips .chip').forEach(function(c){ c.classList.remove('on'); });
+  qa('[data-key]').forEach(function(c){ c.classList.remove('on'); });
+  qa('[data-meal]').forEach(function(c){ c.classList.remove('on'); });
+  renderChildList();
+  updateProgress();
+  $('indivWrap').classList.add('hide');
+  $('noChildHint').classList.remove('hide');
+  showToast('초기화 완료');
+}
+
+function bindEvents(){
+  $('addChildBtn').addEventListener('click', addChildren, false);
+  $('childNameInput').addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); addChildren(); } }, false);
+  $('prevBtn').addEventListener('click', function(){ if (state.current > 0) selectChild(state.current - 1); }, false);
+  $('nextBtn').addEventListener('click', function(){ if (state.current < state.children.length - 1) selectChild(state.current + 1); }, false);
+  $('saveNextBtn').addEventListener('click', saveAndNext, false);
+  $('copyAllBtn').addEventListener('click', copyAll, false);
+  $('saveAllBtn').addEventListener('click', saveHistoryAll, false);
+  $('makeBtn').addEventListener('click', function(){ switchTab('preview'); showToast('알림장을 완성했어요'); }, false);
+  $('resetBtn').addEventListener('click', resetAll, false);
+
+  qa('.tab').forEach(function(btn){ btn.addEventListener('click', function(){ switchTab(btn.getAttribute('data-tab')); }, false); });
+  qa('[data-tpl]').forEach(function(btn){ btn.addEventListener('click', function(){ applyTpl(btn.getAttribute('data-tpl')); }, false); });
+  qa('#commonChips .chip').forEach(function(btn){ btn.addEventListener('click', function(){ var v = btn.getAttribute('data-common'); var idx = state.commonActs.indexOf(v); if (idx >= 0) { state.commonActs.splice(idx,1); btn.classList.remove('on'); } else { state.commonActs.push(v); btn.classList.add('on'); } }, false); });
+  qa('[data-key]').forEach(function(btn){ btn.addEventListener('click', function(){ if (state.current < 0) { showToast('먼저 원아를 선택해 주세요'); return; } var key = btn.getAttribute('data-key'); var value = btn.getAttribute('data-value'); qa('[data-key="'+key+'"]').forEach(function(el){ el.classList.remove('on'); }); btn.classList.add('on'); state.children[state.current].data[key] = value; }, false); });
+  qa('[data-meal]').forEach(function(btn){ btn.addEventListener('click', function(){ if (state.current < 0) { showToast('먼저 원아를 선택해 주세요'); return; } var meal = btn.getAttribute('data-meal'); qa('[data-meal="'+meal+'"]').forEach(function(el){ el.classList.remove('on'); }); btn.classList.add('on'); state.children[state.current].data.meals[meal] = btn.getAttribute('data-value'); }, false); });
+
+  $('childList').addEventListener('click', function(e){
+    var del = e.target.closest('[data-del-index]');
+    if (del) { deleteChild(parseInt(del.getAttribute('data-del-index'),10)); return; }
+    var card = e.target.closest('[data-child-index]');
+    if (card) { selectChild(parseInt(card.getAttribute('data-child-index'),10)); }
+  }, false);
+
+  $('previewList').addEventListener('click', function(e){
+    var op = e.target.closest('[data-open]');
+    if (op) { togglePreview(parseInt(op.getAttribute('data-open'),10)); return; }
+    var cp = e.target.closest('[data-copy]');
+    if (cp) { var i = parseInt(cp.getAttribute('data-copy'),10); copyText(buildNote(state.children[i]), state.children[i].name + ' 복사 완료'); return; }
+    var sv = e.target.closest('[data-save]');
+    if (sv) { saveHistoryOne(parseInt(sv.getAttribute('data-save'),10)); }
+  }, false);
+
+  $('historyList').addEventListener('click', function(e){
+    var row = e.target.closest('[data-hcopy]');
+    if (!row) return;
+    try {
+      var arr = JSON.parse(localStorage.getItem('kn_ios_hist') || '[]');
+      var item = arr[parseInt(row.getAttribute('data-hcopy'),10)];
+      if (item) copyText(item.text, '기록 복사 완료');
+    } catch(err) {
+      showToast('기록을 불러오지 못했어요');
+    }
+  }, false);
+}
+
+function init(){
+  state.jsOk = true;
+  setToday();
+  updateEnvBanner();
+  bindEvents();
+  renderChildList();
+  updateProgress();
+}
+
+init();
+})();
+</script>
+</body>
+</html>
